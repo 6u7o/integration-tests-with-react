@@ -90,8 +90,8 @@ describe('Testando o componente Pokedex', () => {
         pokemons
           .filter((it3) => it3.type === type)
           .map((it) => it.name)
-          .forEach((it2) => {
-            const nextPoke = screen.getByText(`${it2}`);
+          .forEach((name) => {
+            const nextPoke = screen.getByText(`${name}`);
             expect(nextPoke).toBeInTheDocument();
             userEvent.click(btn);
           });
