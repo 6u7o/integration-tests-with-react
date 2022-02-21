@@ -5,17 +5,6 @@ import { screen, render } from '@testing-library/react';
 import App from '../App';
 import pokemons from '../data';
 
-function arrPokeByType(type, btn) {
-  pokemons
-    .filter((it3) => it3.type === type)
-    .map((it) => it.name)
-    .forEach((it2) => {
-      const nextPoke = screen.getByText(`${it2}`);
-      expect(nextPoke).toBeInTheDocument();
-      userEvent.click(btn);
-    });
-}
-
 describe('Testando o componente Pokedex', () => {
   test(
     'Verifica o heading de Pokedex',
@@ -96,45 +85,35 @@ describe('Testando o componente Pokedex', () => {
     'Verifica se a Pokédex tem os botões de filtro',
     () => {
       render(<App />, { wrapper: MemoryRouter });
-      const btn2 = screen.getByRole('button', {
-        name: /Electric/i,
-      });
-      const btn3 = screen.getByRole('button', {
-        name: /Fire/i,
-      });
-      const btn4 = screen.getByRole('button', {
-        name: /Bug/i,
-      });
-      const btn5 = screen.getByRole('button', {
-        name: /Poison/i,
-      });
-      const btn6 = screen.getByRole('button', {
-        name: /Psychic/i,
-      });
-      const btn7 = screen.getByRole('button', {
-        name: /Normal/i,
-      });
-      const btn8 = screen.getByRole('button', {
-        name: /Dragon/i,
-      });
+
+      function arrPokeByType(type, btn) {
+        pokemons
+          .filter((it3) => it3.type === type)
+          .map((it) => it.name)
+          .forEach((it2) => {
+            const nextPoke = screen.getByText(`${it2}`);
+            expect(nextPoke).toBeInTheDocument();
+            userEvent.click(btn);
+          });
+      }
+
       const nextBtn = screen.getByRole('button', {
         name: /próximo pokémon/i,
       });
-      expect(nextBtn).toBeInTheDocument();
-      userEvent.click(btn2);
-      arrPokeByType('Eletric', nextBtn);
-      userEvent.click(btn3);
-      arrPokeByType('Fire', nextBtn);
-      userEvent.click(btn4);
-      arrPokeByType('Bug', nextBtn);
-      userEvent.click(btn5);
-      arrPokeByType('Poison', nextBtn);
-      userEvent.click(btn6);
-      arrPokeByType('Psychic', nextBtn);
-      userEvent.click(btn7);
-      arrPokeByType('Normal', nextBtn);
-      userEvent.click(btn8);
-      arrPokeByType('Dragon', nextBtn);
+
+      const arrTypes = [
+        'Electric',
+        'Fire',
+        'Bug',
+        'Poison',
+        'Psychic',
+        'Normal',
+        'Dragon',
+      ];
+      arrTypes.forEach((type) => {
+        userEvent.click(screen.getByRole('button', { name: type }));
+        arrPokeByType(type, nextBtn);
+      });
     },
   );
   test(
